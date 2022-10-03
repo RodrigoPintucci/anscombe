@@ -41,7 +41,7 @@ function Texto(x, y, text, size, color){
     // draw function
     this.draw = function(){
         c.font = this.size + "px Verdana";
-        c.fillStyle = this.color;
+        c.fillStyle = this.color; // remove this line to see the difference
         c.fillText(this.text, this.x, this.y);
     }
     //update function
@@ -61,7 +61,8 @@ function Square(x, y, width, lenght, color){
     // draw function
     this.draw = function(){
         c.beginPath();
-        c.roundRect(this.x, this.y, this.width, this.lenght, 10);
+        c.rect(this.x, this.y, this.width, this.lenght);
+        //c.roundRect(this.x, this.y, this.width, this.lenght, 10);
         c.strokeStyle = this.color;
         c.stroke();
         c.fillStyle = this.color;
@@ -197,6 +198,9 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         } else if (this.radius > this.minRadius) {
             this.radius -= 1;
         }
+        if (this.radius == this.maxRadius){
+
+        }
         this.draw();
     }
 
@@ -259,6 +263,28 @@ function animate() {
     button1.update();
     button2.update();
     button3.update();
+    //draw a line
+    c.beginPath();
+    c.moveTo(0 + 80, canvas.height - 300 + 300 - 7*40 + 60);
+    c.lineTo(800 + 80, canvas.height - 700 + 280 - 5*40);
+    c.strokeStyle = 'rgb(0, 0, 0)';
+    c.stroke();
+    // c.beginPath();
+    // c.moveTo(0 + 80 +14*40, canvas.height - 300 + 300 - 4*40); 
+    // c.lineTo(0 + 80 +14*40, canvas.height - 1000 + 300 - 4*40);
+    // c.strokeStyle = 'rgb(0, 0, 0)';
+    // c.stroke();
+    // c.beginPath();
+    // c.moveTo(0 + 80, canvas.height - 300 + 300 - 7*40 + 60);
+    // c.lineTo(1400 + 80, canvas.height - 300 + 300 - 7*40 + 60);
+    // c.strokeStyle = 'rgb(0, 0, 0)';
+    // c.stroke();
+    // c.beginPath();
+    // c.moveTo(0 + 80, canvas.height - 300 + 300 - 14*40 + 60);
+    // c.lineTo(1400 + 80, canvas.height - 300 + 300 - 14*40 + 60);
+    // c.strokeStyle = 'rgb(0, 0, 0)';
+    // c.stroke();
+
     for (var i = 0; i < circleArray.length; i++){
         circleArray[i].update();
     }
