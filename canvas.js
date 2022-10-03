@@ -4,77 +4,91 @@ canvas.height = window.innerHeight
 
 var c = canvas.getContext('2d');
 
+// mouse object
 var mouse = {
+    // coordinates
     x: undefined,
     y: undefined,
+    // quartet phase
     q: 1
 }
 
-
+// interaction with mouse hover
 window.addEventListener('mousemove', function(event){
     mouse.x = event.x;
     mouse.y = event.y;
 })
 
+// interaction with mouse click
 window.addEventListener('click', whenclick);
 
+// window resize
 window.addEventListener('resize', function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    // initialize again
     init();
 })
 
+// text object
 function Texto(x, y, text, size, color){
+    // atributes
     this.x = x;
     this.y = y;
     this.text = text;
     this.size = size;
     this.color = color;
+    // draw function
     this.draw = function(){
         c.font = this.size + "px Verdana";
         c.fillStyle = this.color;
         c.fillText(this.text, this.x, this.y);
     }
-
+    //update function
     this.update = function(){
         this.draw();
     }
 }
 
+// rectangle object
 function Square(x, y, width, lenght, color){
+    // atributes
     this.x = x;
     this.y = y;
     this.width = width;
     this.lenght = lenght;
     this.color = color;
+    // draw function
     this.draw = function(){
         c.beginPath();
-        c.rect(this.x, this.y, this.width, this.lenght);
+        c.roundRect(this.x, this.y, this.width, this.lenght, 10);
         c.strokeStyle = this.color;
         c.stroke();
         c.fillStyle = this.color;
         c.fill();
     }
-
+    // update function
     this.update = function(){
         this.draw();
     }
 
 }
 
+// circle object
 function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
+    // atributes
     this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
-    this.i = i;
+    this.i = i; // index
     this.r = r;
     this.g = g;
     this.b = b;
     this.maxRadius = maxRadius;
     this.minRadius = minRadius;
-
+    // draw function
     this.draw = function() {
         c.beginPath();
         c.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
@@ -83,14 +97,17 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         c.stroke();
         c.fill();
     }
-    
+    // update function
     this.update = function() {
         for (var i = 0; i < circleArray.length; i++){
+            // checks the phase
             if (mouse.q == 1){
                 this.r = rgb1[0];
                 this.g = rgb1[1];
                 this.b = rgb1[2];
+                // checks the order
                 if (this.i == i){
+                    // fixes the x position
                     if (firstX[i] > fourthX[i]){
                         if (this.x < (firstX[i] + 2)*40){
                             this.x += this.dx * firstX[i]/fourthX[i];
@@ -100,7 +117,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                             this.x -= this.dx * fourthX[i]/firstX[i];
                         }
                     }
-
+                    // fixes the y position
                     if (firstY[i] > fourthY[i]){
                         if (this.y > canvas.height - 100 - firstY[i]*40){
                             this.y -= this.dy * firstY[i]/fourthY[i];
@@ -111,11 +128,13 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                         }
                     }
                 }
+            
             } else if (mouse.q == 2){     
                 this.r = rgb2[0];
                 this.g = rgb2[1];
                 this.b = rgb2[2];
                 if (this.i == i){
+                    // fixes the y position
                     if (secondY[i] > firstY[i]){
                         if (this.y > canvas.height - 100 - secondY[i]*40){
                             this.y -= this.dy * secondY[i]/firstY[i];
@@ -126,14 +145,12 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                         }
                     }
                 }
-            //    for (var j = 0; j < 100; j++){
-            //         circleArray[i].y += (firstY[i]*40 - secondY[i]*40)/100;
-            //     }
             } else if (mouse.q == 3){
                 this.r = rgb3[0];
                 this.g = rgb3[1];
                 this.b = rgb3[2];
                 if (this.i == i){
+                    // fixes the y position
                     if (thirdY[i] > secondY[i]){
                         if (this.y > canvas.height - 100 - thirdY[i]*40){
                             this.y -= this.dy * thirdY[i]/secondY[i];
@@ -149,6 +166,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                 this.g = rgb4[1];
                 this.b = rgb4[2];
                 if (this.i == i){
+                    // fixes the x position
                     if (fourthX[i] > firstX[i]){
                         if (this.x < (fourthX[i] + 2)*40){
                             this.x += this.dx * fourthX[i]/firstX[i];
@@ -158,7 +176,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                             this.x -= this.dx * firstX[i]/fourthX[i];
                         }
                     }
-
+                    // fixes the y position
                     if (fourthY[i] > thirdY[i]){
                         if (this.y > canvas.height - 100 - fourthY[i]*40){
                             this.y -= this.dy * fourthY[i]/thirdY[i];
@@ -171,6 +189,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                 }
             }
         }
+        // hover interaction
         if (mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50){
                 if (this.radius < this.maxRadius){
                     this.radius += 3;
@@ -178,15 +197,12 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         } else if (this.radius > this.minRadius) {
             this.radius -= 1;
         }
-        // if (this.radius == this.maxRadius){
-        //     texto = new Text(this.x, this.y, this.i);
-
-        // }
         this.draw();
     }
 
 }
 
+// click interaction
 function whenclick (){
     if (mouse.q < 4){
         mouse.q += 1;
@@ -195,9 +211,10 @@ function whenclick (){
     }
 }
 
+// array to store the dots
 var circleArray = [];
 
-
+// creates the objects
 function init(){
     txt = new Texto(100, canvas.height - 110 - 14*40, "anscombe.exe", 30, 'rgb(0, 0, 0)');
     circleArray = [];
@@ -232,6 +249,8 @@ function init(){
     }
 
 }
+
+// animation loop
 function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0, 0, innerWidth, innerHeight);
