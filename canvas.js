@@ -61,8 +61,8 @@ function Square(x, y, width, lenght, color){
     // draw function
     this.draw = function(){
         c.beginPath();
-        c.rect(this.x, this.y, this.width, this.lenght);
-        //c.roundRect(this.x, this.y, this.width, this.lenght, 10);
+        //c.rect(this.x, this.y, this.width, this.lenght);
+        c.roundRect(this.x, this.y, this.width, this.lenght, 10);
         c.strokeStyle = this.color;
         c.stroke();
         c.fillStyle = this.color;
@@ -198,10 +198,26 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         } else if (this.radius > this.minRadius) {
             this.radius -= 1;
         }
-        if (this.radius == this.maxRadius){
-
-        }
         this.draw();
+        if (this.radius >= this.maxRadius){
+            if (mouse.q == 1){
+                var x = firstX[this.i];
+                var y = firstY[this.i];
+            } else if (mouse.q == 2){
+                var x = firstX[this.i];
+                var y = secondY[this.i];
+            } else if (mouse.q == 3){
+                var x = firstX[this.i];
+                var y = thirdY[this.i];
+            } else if (mouse.q == 4){
+                var x = fourthX[this.i];
+                var y = fourthY[this.i];
+            }
+            c.font = "11px Verdana";
+            c.fillStyle = "rgb(0,0,0)";
+            //c.fillText("(X, Y)", this.x - this.radius + 2, this.y + this.radius/5);
+            c.fillText("(" + x + ", " + y + ")", this.x - this.radius + 2, this.y + this.radius/5);
+        }
     }
 
 }
@@ -241,8 +257,8 @@ function init(){
         var radius = 10;
         var x = (firstX[i] + 2)*40;
         var y = canvas.height - 100 - firstY[i]*40;
-        var dx = 0.5;
-        var dy = 0.5;
+        var dx = 1;
+        var dy = 1;
         var i = i;
         var r = 219;
         var g = 175;
