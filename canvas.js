@@ -24,17 +24,35 @@ window.addEventListener('resize', function(){
     init();
 })
 
-function Square(x, y, width, lenght){
+function Texto(x, y, text, size, color){
+    this.x = x;
+    this.y = y;
+    this.text = text;
+    this.size = size;
+    this.color = color;
+    this.draw = function(){
+        c.font = this.size + "px Verdana";
+        c.fillStyle = this.color;
+        c.fillText(this.text, this.x, this.y);
+    }
+
+    this.update = function(){
+        this.draw();
+    }
+}
+
+function Square(x, y, width, lenght, color){
     this.x = x;
     this.y = y;
     this.width = width;
     this.lenght = lenght;
+    this.color = color;
     this.draw = function(){
         c.beginPath();
         c.rect(this.x, this.y, this.width, this.lenght);
-        c.strokeStyle = 'rgb(107, 73, 110)';
+        c.strokeStyle = this.color;
         c.stroke();
-        c.fillStyle = 'rgb(107, 73, 110)';
+        c.fillStyle = this.color;
         c.fill();
     }
 
@@ -160,6 +178,10 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         } else if (this.radius > this.minRadius) {
             this.radius -= 1;
         }
+        // if (this.radius == this.maxRadius){
+        //     texto = new Text(this.x, this.y, this.i);
+
+        // }
         this.draw();
     }
 
@@ -177,6 +199,7 @@ var circleArray = [];
 
 
 function init(){
+    txt = new Texto(100, 85, "anscombe.exe", 30, 'rgb(0, 0, 0)');
     circleArray = [];
     firstX = [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5];
     firstY = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68];
@@ -188,7 +211,11 @@ function init(){
     rgb2 = [219, 209, 173];
     rgb3 = [173, 219, 186];
     rgb4 = [173, 177, 219];
-    sq = new Square((2)*40, canvas.height - 100 - 14*40, 20*40, 3.15*40 + (10.84 - 4.26)*40 + (4.26 -3.10)*40 + 3.10*40);
+    sq1 = new Square((1.5)*40, canvas.height - 140 - 14*40, 21*40, (3.15 +10.84 + 1.5)*40, 'rgb(112, 146, 190)')
+    sq2 = new Square((2)*40, canvas.height - 100 - 14*40, 20*40, (3.15 +10.84)*40, 'rgb(107, 73, 110)');
+    button1 = new Square(690, 60, 50, 27, 'rgb(200, 200, 200)');
+    button2 = new Square(760, 60, 50, 27, 'rgb(200, 200, 200)');
+    button3 = new Square(830, 60, 50, 27, 'rgb(255, 200, 200)');
     for(var i = 0; i < 11; i++){
         var radius = 10;
         var x = (firstX[i] + 2)*40;
@@ -208,11 +235,16 @@ function init(){
 function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0, 0, innerWidth, innerHeight);
-    sq.update();
+    sq1.update();
+    sq2.update();
+    button1.update();
+    button2.update();
+    button3.update();
     for (var i = 0; i < circleArray.length; i++){
         circleArray[i].update();
     }
-
+    txt.update();
+    
 }
 init();
 animate();
