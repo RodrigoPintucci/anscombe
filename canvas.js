@@ -103,95 +103,56 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         for (var i = 0; i < circleArray.length; i++){
             // checks the phase
             if (mouse.q == 1){
+                var initial = [fourthX[i], fourthY[i]];
+                var final = [firstX[i], firstY[i]];
                 this.r = rgb1[0];
                 this.g = rgb1[1];
                 this.b = rgb1[2];
-                // checks the order
-                if (this.i == i){
-                    // fixes the x position
-                    if (firstX[i] > fourthX[i]){
-                        if (this.x < (firstX[i] + 2)*40){
-                            this.x += this.dx * firstX[i]/fourthX[i];
-                        }
-                    } else {
-                        if (this.x > (firstX[i] + 2)*40){
-                            this.x -= this.dx * fourthX[i]/firstX[i];
-                        }
-                    }
-                    // fixes the y position
-                    if (firstY[i] > fourthY[i]){
-                        if (this.y > canvas.height - 100 - firstY[i]*40){
-                            this.y -= this.dy * firstY[i]/fourthY[i];
-                        }
-                    } else {
-                        if (this.y < canvas.height - 100 - firstY[i]*40){
-                            this.y += this.dy * fourthY[i]/firstY[i];
-                        }
-                    }
-                }
-            
             } else if (mouse.q == 2){     
+                var initial = [firstX[i], firstY[i]];
+                var final = [firstX[i], secondY[i]];
                 this.r = rgb2[0];
                 this.g = rgb2[1];
                 this.b = rgb2[2];
-                if (this.i == i){
-                    // fixes the y position
-                    if (secondY[i] > firstY[i]){
-                        if (this.y > canvas.height - 100 - secondY[i]*40){
-                            this.y -= this.dy * secondY[i]/firstY[i];
-                        }
-                    } else {
-                        if (this.y < canvas.height - 100 - secondY[i]*40){
-                            this.y += this.dy * firstY[i]/secondY[i];
-                        }
-                    }
-                }
             } else if (mouse.q == 3){
+                var initial = [firstX[i], secondY[i]];
+                var final = [firstX[i], thirdY[i]];
                 this.r = rgb3[0];
                 this.g = rgb3[1];
                 this.b = rgb3[2];
-                if (this.i == i){
-                    // fixes the y position
-                    if (thirdY[i] > secondY[i]){
-                        if (this.y > canvas.height - 100 - thirdY[i]*40){
-                            this.y -= this.dy * thirdY[i]/secondY[i];
-                        }
-                    } else {
-                        if (this.y < canvas.height - 100 - thirdY[i]*40){
-                            this.y += this.dy * secondY[i]/thirdY[i];
-                        }
-                    }
-                }
             } else if (mouse.q == 4){
+                var initial = [firstX[i], thirdY[i]];
+                var final = [fourthX[i], fourthY[i]];
                 this.r = rgb4[0];
                 this.g = rgb4[1];
                 this.b = rgb4[2];
-                if (this.i == i){
-                    // fixes the x position
-                    if (fourthX[i] > firstX[i]){
-                        if (this.x < (fourthX[i] + 2)*40){
-                            this.x += this.dx * fourthX[i]/firstX[i];
-                        }
-                    } else {
-                        if (this.x > (fourthX[i] + 2)*40){
-                            this.x -= this.dx * firstX[i]/fourthX[i];
-                        }
+            }
+            // checks the order
+            if (this.i == i){
+                // fixes the x position
+                if (final[0] > initial[0]){
+                    if (this.x < (final[0] + 2)*40){
+                        this.x += this.dx * final[0]/initial[0];
                     }
-                    // fixes the y position
-                    if (fourthY[i] > thirdY[i]){
-                        if (this.y > canvas.height - 100 - fourthY[i]*40){
-                            this.y -= this.dy * fourthY[i]/thirdY[i];
-                        }
-                    } else {
-                        if (this.y < canvas.height -100 - fourthY[i]*40){
-                            this.y += this.dy * thirdY[i]/fourthY[i];
-                        }
+                } else {
+                    if (this.x > (final[0] + 2)*40){
+                        this.x -= this.dx * initial[0]/final[0];
+                    }
+                }
+                // fixes the y position
+                if (final[1] > initial[1]){
+                    if (this.y > canvas.height - 100 - final[1]*40){
+                        this.y -= this.dy * final[1]/initial[1];
+                    }
+                } else {
+                    if (this.y < canvas.height - 100 - final[1]*40){
+                        this.y += this.dy * initial[1]/final[1];
                     }
                 }
             }
         }
         // hover interaction
-        if (mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50){
+        if (mouse.x - this.x < 20 && mouse.x - this.x > -20 && mouse.y - this.y < 20 && mouse.y - this.y > -20){
                 if (this.radius < this.maxRadius){
                     this.radius += 3;
                 }
@@ -200,14 +161,12 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
         }
         this.draw();
         if (this.radius >= this.maxRadius){
+            var x = firstX[this.i];
             if (mouse.q == 1){
-                var x = firstX[this.i];
                 var y = firstY[this.i];
             } else if (mouse.q == 2){
-                var x = firstX[this.i];
                 var y = secondY[this.i];
             } else if (mouse.q == 3){
-                var x = firstX[this.i];
                 var y = thirdY[this.i];
             } else if (mouse.q == 4){
                 var x = fourthX[this.i];
