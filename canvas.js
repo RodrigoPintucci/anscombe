@@ -4,6 +4,15 @@ canvas.height = window.innerHeight
 
 var c = canvas.getContext('2d');
 
+WebFontConfig = {
+    google: { families: ['VT323'] }
+}
+
+var wf = document.createElement("script");
+wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+wf.async = 'true';
+document.head.appendChild(wf);
+
 // mouse object
 var mouse = {
     // coordinates
@@ -41,7 +50,7 @@ function Texto(x, y, text, size, color){
     // draw function
     this.draw = function(){
         c.beginPath();
-        c.font = this.size + "px Verdana";
+        c.font = this.size + "px VT323";
         c.fillStyle = this.color; // remove this line to see the difference
         c.textBaseline = "alphabetic";
         c.textAlign = "start";
@@ -68,6 +77,7 @@ function Square(x, y, width, lenght, color){
         //c.rect(this.x, this.y, this.width, this.lenght);
         c.roundRect(this.x, this.y, this.width, this.lenght, 10);
         c.strokeStyle = this.color;
+        c.lineWidth = 1;
         c.stroke();
         c.fillStyle = this.color;
         c.fill();
@@ -146,6 +156,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                         this.y += this.dy * initial[1]/final[1];
                     }
                 }
+                // fixes the color
                 for (var k = 0; k < 3; k++){
                     if (rgb_i[k] < rgb_f[k]){
                         rgb_i[k] += 1;
@@ -167,6 +178,8 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
             this.radius -= 1;
         }
         this.draw();
+
+        // prints the coordinates while hovering
         if (this.radius >= this.maxRadius){
             var x = firstX[this.i];
             if (mouse.q == 1){
@@ -180,7 +193,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                 var y = fourthY[this.i];
             }
             c.beginPath();
-            c.font = "11px Verdana";
+            c.font = "15px VT323";
             c.fillStyle = "rgb(0,0,0)";
             //c.fillText("(X, Y)", this.x - this.radius + 2, this.y + this.radius/5);
             c.textBaseline = "middle";
@@ -206,23 +219,27 @@ var circleArray = [];
 
 // creates the objects
 function init(){
-    txt = new Texto(100, canvas.height - 110 - 14*40, "anscombe.exe", 30, 'rgb(0, 0, 0)');
-    circleArray = [];
+    // anscombe coordinates
     firstX = [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5];
     firstY = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68];
     secondY = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74];
     thirdY = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73];
     fourthX = [8, 8, 8, 8, 8, 8, 8, 19, 8, 8, 8];
     fourthY = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89];
+    // colors
     rgb1 = [219, 175, 175];
     rgb2 = [219, 209, 173];
     rgb3 = [173, 219, 186];
     rgb4 = [173, 177, 219];
+    // creates the rectangles
     sq1 = new Square((1.5)*40, canvas.height - 140 - 14*40, 21*40, (3.15 +10.84 + 1.5)*40, 'rgb(112, 146, 190)')
     sq2 = new Square((2)*40, canvas.height - 100 - 14*40, 20*40, (3.15 +10.84)*40, 'rgb(107, 73, 110)');
     button1 = new Square(690, canvas.height - 134 - 14 *40, 50, 27, 'rgb(200, 200, 200)');
     button2 = new Square(760, canvas.height - 134 - 14 *40, 50, 27, 'rgb(200, 200, 200)');
     button3 = new Square(830, canvas.height - 134 - 14 *40, 50, 27, 'rgb(255, 200, 200)');
+    squares = [sq1, sq2, button1, button2, button3];
+    // creates the dots
+    circleArray = [];
     for(var i = 0; i < 11; i++){
         var radius = 10;
         var x = (firstX[i] + 2)*40;
@@ -237,38 +254,41 @@ function init(){
         var minRadius = 1*radius;
         circleArray.push(new Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius));
     }
+    // creates the texts
     texts = [];
-    title = new Texto(950, canvas.height - 110 - 14*40 + 10, "Anscombe's Quartet", 55, 'rgb(0, 0, 0)');
-    subtitle = new Texto(950, canvas.height - 110 - 14*40 + 70, "The data sets have nearly" , 30, 'rgb(0, 0, 0)');
-    subtitle2 = new Texto(950, canvas.height - 110 - 14*40 + 110, "identical descriptive statistics" , 30, 'rgb(0, 0, 0)');
-    example1 = new Texto(950, canvas.height - 110 - 14*40 + 160, "Mean of x: 9", 25, 'rgb(0, 0, 0)');
-    example2 = new Texto(950, canvas.height - 110 - 14*40 + 200, "Mean of y: 7.5", 25, 'rgb(0, 0, 0)');
-    example3 = new Texto(950, canvas.height - 110 - 14*40 + 240, "Sample variation of x: 11", 25, 'rgb(0, 0, 0)');
-    example4 = new Texto(950, canvas.height - 110 - 14*40 + 280, "Sample variation of y: 4.125", 25, 'rgb(0, 0, 0)');
-    example5 = new Texto(950, canvas.height - 110 - 14*40 + 320, "Correlation between x and y: 0.816", 25, 'rgb(0, 0, 0)');
-    example6 = new Texto(950, canvas.height - 110 - 14*40 + 360, "Linear regression line: y = 3.00 + 0.500x", 25, 'rgb(0, 0, 0)');
-    example7 = new Texto(950, canvas.height - 110 - 14*40 + 400, "Coefficient of determination: 0.67", 25, 'rgb(0, 0, 0)');
-    tldr = new Texto(950, canvas.height - 110 - 14*40 + 460, "VISUALIZATION", 50, 'rgb(0, 0, 0)');
-    tldr2 = new Texto(950, canvas.height - 110 - 14*40 + 520, "IS IMPORTANT!!" , 50, 'rgb(0, 0, 0)');
-    credits = new Texto(950, canvas.height - 110 - 14*40 + 590, "Rodrigo Pintucci 2022", 30, 'rgb(0, 0, 0)');
-    texts.push(title, subtitle, subtitle2, example1, example2, example3, example4, example5, example6, example7, tldr, tldr2, credits);
+    txt = new Texto(100, canvas.height - 110 - 14*40, "anscombe.exe", 35, 'rgb(64, 44, 66)');
+    title = new Texto(950, canvas.height - 110 - 14*40 + 10, "Anscombe's Quartet", 60, 'rgb(64, 44, 66)');
+    subtitle = new Texto(950, canvas.height - 110 - 14*40 + 70, "The data sets have nearly" , 30, 'rgb(64, 44, 66)');
+    subtitle2 = new Texto(950, canvas.height - 110 - 14*40 + 110, "identical descriptive statistics" , 30, 'rgb(64, 44, 66)');
+    example1 = new Texto(950, canvas.height - 110 - 14*40 + 160, "Mean of x: 9", 25, 'rgb(64, 44, 66)');
+    example2 = new Texto(950, canvas.height - 110 - 14*40 + 200, "Mean of y: 7.5", 25, 'rgb(64, 44, 66)');
+    example3 = new Texto(950, canvas.height - 110 - 14*40 + 240, "Sample variation of x: 11", 25, 'rgb(64, 44, 66)');
+    example4 = new Texto(950, canvas.height - 110 - 14*40 + 280, "Sample variation of y: 4.125", 25, 'rgb(64, 44, 66)');
+    example5 = new Texto(950, canvas.height - 110 - 14*40 + 320, "Correlation between x and y: 0.816", 25, 'rgb(64, 44, 66)');
+    example6 = new Texto(950, canvas.height - 110 - 14*40 + 360, "Linear regression line: y = 3.00 + 0.500x", 25, 'rgb(64, 44, 66)');
+    example7 = new Texto(950, canvas.height - 110 - 14*40 + 400, "Coefficient of determination: 0.67", 25, 'rgb(64, 44, 66)');
+    tldr = new Texto(950, canvas.height - 110 - 14*40 + 460, "VISUALIZATION", 50, 'rgb(64, 44, 66)');
+    tldr2 = new Texto(950, canvas.height - 110 - 14*40 + 520, "IS IMPORTANT!!" , 50, 'rgb(64, 44, 66)');
+    credits = new Texto(950, canvas.height - 110 - 14*40 + 590, "Rodrigo Pintucci 2022", 30, 'rgb(64, 44, 66)');
+    texts = [txt, title, subtitle, subtitle2, example1, example2, example3, example4, example5, example6, example7, tldr, tldr2, credits];
 }
 
 // animation loop
 function animate() {
     requestAnimationFrame(animate);
     c.clearRect(0, 0, innerWidth, innerHeight);
-    sq1.update();
-    sq2.update();
-    button1.update();
-    button2.update();
-    button3.update();
-    //draw a line
+    for (var i = 0; i < squares.length; i++){
+        squares[i].update();
+    }
+    // draw the regression line
     c.beginPath();
     c.moveTo(0 + 80, canvas.height - 300 + 300 - 7*40 + 60);
+    c.lineWidth = 2;
     c.lineTo(800 + 80, canvas.height - 700 + 280 - 5*40);
     c.strokeStyle = 'rgb(64, 44, 66)';
     c.stroke();
+
+    // helpful lines    
     // c.beginPath();
     // c.moveTo(0 + 80 +14*40, canvas.height - 300 + 300 - 4*40); 
     // c.lineTo(0 + 80 +14*40, canvas.height - 1000 + 300 - 4*40);
@@ -291,6 +311,22 @@ function animate() {
     for (var i = 0; i < texts.length; i++){
         texts[i].update();
     }
+
+    // mouse drawing
+    c.beginPath();
+    c.moveTo(800, canvas.height - 130);
+    c.lineWidth = 5;
+    c.lineTo( 800, canvas.height - 130 + 50);
+    c.lineTo( 815, canvas.height - 130 + 42);
+    c.lineTo( 825, canvas.height - 130 + 60);
+    c.lineTo( 835, canvas.height - 130 + 54);
+    c.lineTo( 825, canvas.height - 130 + 36);
+    c.lineTo( 837, canvas.height - 130 + 28);
+    c.lineTo( 801, canvas.height - 127.5);
+    c.strokeStyle = 'rgb(64, 44, 66)';
+    c.fillStyle = 'rgb(255, 255, 255)';
+    c.fill();
+    c.stroke();
 }
 init();
 animate();
