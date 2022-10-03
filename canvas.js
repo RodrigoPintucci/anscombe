@@ -40,9 +40,13 @@ function Texto(x, y, text, size, color){
     this.color = color;
     // draw function
     this.draw = function(){
+        c.beginPath();
         c.font = this.size + "px Verdana";
         c.fillStyle = this.color; // remove this line to see the difference
+        c.textBaseline = "alphabetic";
+        c.textAlign = "start";
         c.fillText(this.text, this.x, this.y);
+        c.stroke();
     }
     //update function
     this.update = function(){
@@ -102,30 +106,23 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
     this.update = function() {
         for (var i = 0; i < circleArray.length; i++){
             // checks the phase
+            var rgb_i = [this.r, this.g, this.b];
             if (mouse.q == 1){
                 var initial = [fourthX[i], fourthY[i]];
                 var final = [firstX[i], firstY[i]];
-                this.r = rgb1[0];
-                this.g = rgb1[1];
-                this.b = rgb1[2];
+                var rgb_f = [rgb1[0], rgb1[1], rgb1[2]];
             } else if (mouse.q == 2){     
                 var initial = [firstX[i], firstY[i]];
                 var final = [firstX[i], secondY[i]];
-                this.r = rgb2[0];
-                this.g = rgb2[1];
-                this.b = rgb2[2];
+                var rgb_f = [rgb2[0], rgb2[1], rgb2[2]];
             } else if (mouse.q == 3){
                 var initial = [firstX[i], secondY[i]];
                 var final = [firstX[i], thirdY[i]];
-                this.r = rgb3[0];
-                this.g = rgb3[1];
-                this.b = rgb3[2];
+                var rgb_f = [rgb3[0], rgb3[1], rgb3[2]];
             } else if (mouse.q == 4){
                 var initial = [firstX[i], thirdY[i]];
                 var final = [fourthX[i], fourthY[i]];
-                this.r = rgb4[0];
-                this.g = rgb4[1];
-                this.b = rgb4[2];
+                var rgb_f = [rgb4[0], rgb4[1], rgb4[2]];
             }
             // checks the order
             if (this.i == i){
@@ -149,6 +146,16 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                         this.y += this.dy * initial[1]/final[1];
                     }
                 }
+                for (var k = 0; k < 3; k++){
+                    if (rgb_i[k] < rgb_f[k]){
+                        rgb_i[k] += 1;
+                    } else {
+                        rgb_i[k] -= 1;
+                    }
+                }
+                this.r = rgb_i[0];
+                this.g = rgb_i[1];
+                this.b = rgb_i[2];
             }
         }
         // hover interaction
@@ -172,10 +179,14 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
                 var x = fourthX[this.i];
                 var y = fourthY[this.i];
             }
+            c.beginPath();
             c.font = "11px Verdana";
             c.fillStyle = "rgb(0,0,0)";
             //c.fillText("(X, Y)", this.x - this.radius + 2, this.y + this.radius/5);
-            c.fillText("(" + x + ", " + y + ")", this.x - this.radius + 2, this.y + this.radius/5);
+            c.textBaseline = "middle";
+            c.textAlign = "center";
+            c.fillText("(" + x + ", " + y + ")", this.x  + 2, this.y);
+            c.stroke();
         }
     }
 
@@ -226,7 +237,21 @@ function init(){
         var minRadius = 1*radius;
         circleArray.push(new Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius));
     }
-
+    texts = [];
+    title = new Texto(950, canvas.height - 110 - 14*40 + 10, "Anscombe's Quartet", 55, 'rgb(0, 0, 0)');
+    subtitle = new Texto(950, canvas.height - 110 - 14*40 + 70, "The data sets have nearly" , 30, 'rgb(0, 0, 0)');
+    subtitle2 = new Texto(950, canvas.height - 110 - 14*40 + 110, "identical descriptive statistics" , 30, 'rgb(0, 0, 0)');
+    example1 = new Texto(950, canvas.height - 110 - 14*40 + 160, "Mean of x: 9", 25, 'rgb(0, 0, 0)');
+    example2 = new Texto(950, canvas.height - 110 - 14*40 + 200, "Mean of y: 7.5", 25, 'rgb(0, 0, 0)');
+    example3 = new Texto(950, canvas.height - 110 - 14*40 + 240, "Sample variation of x: 11", 25, 'rgb(0, 0, 0)');
+    example4 = new Texto(950, canvas.height - 110 - 14*40 + 280, "Sample variation of y: 4.125", 25, 'rgb(0, 0, 0)');
+    example5 = new Texto(950, canvas.height - 110 - 14*40 + 320, "Correlation between x and y: 0.816", 25, 'rgb(0, 0, 0)');
+    example6 = new Texto(950, canvas.height - 110 - 14*40 + 360, "Linear regression line: y = 3.00 + 0.500x", 25, 'rgb(0, 0, 0)');
+    example7 = new Texto(950, canvas.height - 110 - 14*40 + 400, "Coefficient of determination: 0.67", 25, 'rgb(0, 0, 0)');
+    tldr = new Texto(950, canvas.height - 110 - 14*40 + 460, "VISUALIZATION", 50, 'rgb(0, 0, 0)');
+    tldr2 = new Texto(950, canvas.height - 110 - 14*40 + 520, "IS IMPORTANT!!" , 50, 'rgb(0, 0, 0)');
+    credits = new Texto(950, canvas.height - 110 - 14*40 + 590, "Rodrigo Pintucci 2022", 30, 'rgb(0, 0, 0)');
+    texts.push(title, subtitle, subtitle2, example1, example2, example3, example4, example5, example6, example7, tldr, tldr2, credits);
 }
 
 // animation loop
@@ -242,7 +267,7 @@ function animate() {
     c.beginPath();
     c.moveTo(0 + 80, canvas.height - 300 + 300 - 7*40 + 60);
     c.lineTo(800 + 80, canvas.height - 700 + 280 - 5*40);
-    c.strokeStyle = 'rgb(0, 0, 0)';
+    c.strokeStyle = 'rgb(64, 44, 66)';
     c.stroke();
     // c.beginPath();
     // c.moveTo(0 + 80 +14*40, canvas.height - 300 + 300 - 4*40); 
@@ -263,8 +288,9 @@ function animate() {
     for (var i = 0; i < circleArray.length; i++){
         circleArray[i].update();
     }
-    txt.update();
-    
+    for (var i = 0; i < texts.length; i++){
+        texts[i].update();
+    }
 }
 init();
 animate();
