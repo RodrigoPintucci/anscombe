@@ -199,7 +199,7 @@ var circleArray = [];
 
 
 function init(){
-    txt = new Texto(100, 85, "anscombe.exe", 30, 'rgb(0, 0, 0)');
+    txt = new Texto(100, canvas.height - 110 - 14*40, "anscombe.exe", 30, 'rgb(0, 0, 0)');
     circleArray = [];
     firstX = [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5];
     firstY = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68];
@@ -213,9 +213,9 @@ function init(){
     rgb4 = [173, 177, 219];
     sq1 = new Square((1.5)*40, canvas.height - 140 - 14*40, 21*40, (3.15 +10.84 + 1.5)*40, 'rgb(112, 146, 190)')
     sq2 = new Square((2)*40, canvas.height - 100 - 14*40, 20*40, (3.15 +10.84)*40, 'rgb(107, 73, 110)');
-    button1 = new Square(690, 60, 50, 27, 'rgb(200, 200, 200)');
-    button2 = new Square(760, 60, 50, 27, 'rgb(200, 200, 200)');
-    button3 = new Square(830, 60, 50, 27, 'rgb(255, 200, 200)');
+    button1 = new Square(690, canvas.height - 134 - 14 *40, 50, 27, 'rgb(200, 200, 200)');
+    button2 = new Square(760, canvas.height - 134 - 14 *40, 50, 27, 'rgb(200, 200, 200)');
+    button3 = new Square(830, canvas.height - 134 - 14 *40, 50, 27, 'rgb(255, 200, 200)');
     for(var i = 0; i < 11; i++){
         var radius = 10;
         var x = (firstX[i] + 2)*40;
