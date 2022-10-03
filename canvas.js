@@ -194,7 +194,7 @@ function Circle(x, y, dx, dy, radius, i, r, g, b, maxRadius, minRadius) {
             }
             c.beginPath();
             c.font = "15px VT323";
-            c.fillStyle = "rgb(0,0,0)";
+            c.fillStyle = "rgb(64, 44, 66)";
             //c.fillText("(X, Y)", this.x - this.radius + 2, this.y + this.radius/5);
             c.textBaseline = "middle";
             c.textAlign = "center";
